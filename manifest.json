@@ -1,0 +1,26 @@
+{
+    "name": "Item Scraping Tool",
+    "description": "商品の発注のための情報を取得します",
+    "version": "1.0.1",
+    "manifest_version": 3,
+    "icons": {
+      "16": "icon_16x.png",
+      "48": "icon_48x.png",
+      "128": "icon_128x.png"
+    },
+    "permissions": ["activeTab", "storage", "contextMenus", "tabs", "clipboardWrite"],
+    "background": {
+        "service_worker": "event.js"
+    },
+    "content_scripts":[
+        {
+          "matches": ["https://www.monotaro.com/p/*"],
+          "js": ["contentscript.js"]
+        }
+    ],
+    "action": {
+      "default_title": "Item Scraping Tool",
+      "default_icon": "icon_48x.png",
+      "default_popup": "popup.html"
+    }
+  }
