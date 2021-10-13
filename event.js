@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(() => {
       "title": "Sample Context Menu",
       "contexts": ["selection"]
     });
-    chrome.storage.local.set({length: 0, items: [], tmpItem: {}});
+    chrome.storage.local.set({length: 0, items: [], total: 0, tmpItem: {}});
   });
 
 // contentscriptから送られたアイテム情報をローカルストレージに保存

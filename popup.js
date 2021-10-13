@@ -16,7 +16,10 @@ function getItem(){
                 clone.getElementById('itemQuantity').value = res.tmpItem.qty;
                 document.getElementById('list_grid').appendChild(clone);
 
-                chrome.storage.local.set({'items': res.items.concat([res.tmpItem]), 'length':res.length+1});
+                total = document.getElementById('total');
+                total.textContent = Number(total.textContent) + Number(res.tmpItem.price)*Number(res.tmpItem.qty);
+
+                chrome.storage.local.set({'items': res.items.concat([res.tmpItem]), 'length': res.length+1, 'total': total.textContent});
             }
         }
     });
@@ -56,14 +59,20 @@ function showItemList(items){
         document.getElementById('list_grid').appendChild(clone);
         n += 1;
     }
+    chrome.storage.local.get('total', function(res) {
+        total = document.getElementById('total');
+        total.textContent = res.total;    
+    });
 }
 
 function clearItemList(){
     const itemList = document.getElementById('list_grid');
-    chrome.storage.local.set({items: [], length: 0});
+    chrome.storage.local.set({items: [], length: 0, total: 0});
     while( itemList.firstChild ){
         itemList.removeChild( itemList.firstChild );
       }
+    total = document.getElementById('total');
+    total.textContent = 0;
 }
 
 //main script
