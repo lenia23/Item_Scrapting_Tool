@@ -16,6 +16,10 @@
         {
           "matches": ["https://www.monotaro.com/p/*"],
           "js": ["contentscript.js"]
+        },
+        {
+          "matches": ["https://www.digikey.jp/product-detail/ja/*"],
+          "js": ["cs_digikey.js"]
         }
     ],
     "action": {

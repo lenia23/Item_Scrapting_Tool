@@ -1,5 +1,18 @@
 //このファイルは拡張機能アイコンがクリックされると自動的に走る
 
+function updateQty(ev){
+    id = ev.target.closest('.item').id;
+    idx = Number(id.replace('item',''));
+    newQty = Number(ev.target.value);
+    chrome.storage.local.get(['items', 'total'], function(res){
+        price = Number(res.items[idx].price);
+        oldQty = Number(res.items[idx].qty);
+        res.total = Number(res.total) + price * (newQty - oldQty);
+        res.items[idx].qty = newQty;
+        document.getElementById('total').textContent = res.total;
+        chrome.storage.local.set({'items': res.items, 'total': res.total});
+    });
+}
 
 function getItem(){
     const templateContent = document.getElementById('template').content;
@@ -7,17 +20,20 @@ function getItem(){
     chrome.storage.local.get(['length', 'tmpItem', 'items'], function(res) {
         if(JSON.stringify(res.tmpItem) !== JSON.stringify({})){
             if(!res.items.some(item => item.url === res.tmpItem.url)){
-                clone.id = 'item'+res.length;
-                clone.getElementById('item').querySelector('summary').textContent = 'Item ' + (res.length+1);
+                newID = 'item'+res.length;
+                clone.getElementById('item').id = newID;
+                clone.getElementById(newID).querySelector('summary').textContent = 'Item ' + (res.length+1);
                 clone.getElementById('itemBrand').value = res.tmpItem.brand;
                 clone.getElementById('itemName').value = res.tmpItem.name;
                 clone.getElementById('itemNumber').value = res.tmpItem.num;
                 clone.getElementById('itemURL').value = res.tmpItem.url;
                 clone.getElementById('itemQuantity').value = res.tmpItem.qty;
+                clone.getElementById('itemQuantity').addEventListener('input', updateQty);
                 document.getElementById('list_grid').appendChild(clone);
 
                 total = document.getElementById('total');
                 total.textContent = Number(total.textContent) + Number(res.tmpItem.price)*Number(res.tmpItem.qty);
+
 
                 chrome.storage.local.set({'items': res.items.concat([res.tmpItem]), 'length': res.length+1, 'total': total.textContent});
             }
@@ -49,13 +65,15 @@ function showItemList(items){
     let n = 0;
     for(let item of items){    
         const clone = document.importNode(templateContent, true);
-        clone.id = 'item' + n;
-        clone.getElementById('item').querySelector('summary').textContent = 'Item ' + (n+1);
+        newID = 'item' + n;
+        clone.getElementById('item').id = newID;
+        clone.getElementById(newID).querySelector('summary').textContent = 'Item ' + (n+1);
         clone.getElementById('itemBrand').value = item.brand;
         clone.getElementById('itemName').value = item.name;
         clone.getElementById('itemNumber').value = item.num;
         clone.getElementById('itemURL').value = item.url;
         clone.getElementById('itemQuantity').value = item.qty;
+        clone.getElementById('itemQuantity').addEventListener('input', updateQty);
         document.getElementById('list_grid').appendChild(clone);
         n += 1;
     }
