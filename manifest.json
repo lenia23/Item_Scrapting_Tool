@@ -24,6 +24,10 @@
         {
           "matches": ["https://www.switch-science.com/catalog/*"],
           "js": ["cs_switchscience.js"]
+        },
+        {
+          "matches": ["https://www.mouser.jp/ProductDetail/*"],
+          "js": ["cs_mouser.js"]
         }
     ],
     "action": {
