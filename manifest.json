@@ -20,6 +20,10 @@
         {
           "matches": ["https://www.digikey.jp/product-detail/ja/*"],
           "js": ["cs_digikey.js"]
+        },
+        {
+          "matches": ["https://www.switch-science.com/catalog/*"],
+          "js": ["cs_switchscience.js"]
         }
     ],
     "action": {

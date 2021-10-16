@@ -9,7 +9,7 @@ function updateQty(ev){
         oldQty = Number(res.items[idx].qty);
         res.total = Number(res.total) + price * (newQty - oldQty);
         res.items[idx].qty = newQty;
-        document.getElementById('total').textContent = res.total;
+        document.getElementById('total').textContent = res.total.toLocaleString();
         chrome.storage.local.set({'items': res.items, 'total': res.total});
     });
 }
